@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api-Clima</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+
+    <style>
+        body{
+            background-image: url('http://2.bp.blogspot.com/-J2OJG4CXRiI/UJD6trwoQJI/AAAAAAAABQg/MlSNA4bm6n8/s1600/sky_1638x1024.jpg');
+            color: white;
+        }
+        #imgWeather{
+            width: 100px;
+            margin-left: 470px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+
+            $('form').submit(function() {
+
+                let city=$("#city").val();
+                let url="http://api.openweathermap.org/data/2.5/weather?q="+city+",&&appid=5122d5e34bc2bfb777f9152a8a1f1fa3";
+
+                $.get(url, function(data) {
+                    
+                    if (data.weather[0].description.includes("clouds") ){
+                        $("#imgWeather").attr("src","https://www.pngrepo.com/png/178069/512/cloudy-sky.png")
+                
+                    }else if(data.weather[0].description.includes("clear")){
+                        $("#imgWeather").attr("src","https://aux.iconspalace.com/uploads/157867243927156466.png")
+                    
+                    }else if(data.weather[0].description.includes("rain")){
+                        $("#imgWeather").attr("src","https://cdn1.iconfinder.com/data/icons/weather-bright-flat-design/128/rainy-cloud-rain-weather-512.png")
+                    
+                    }else if(data.weather[0].description.includes("snow")){
+                        $("#imgWeather").attr("src","https://freesvg.org/img/sivvus_weather_symbols_5.png")
+                    
+                    }else if(data.weather[0].description.includes("storm")){
+                        $("#imgWeather").attr("src","https://toppng.com/public/uploads/thumbnail/collection-of-thunder-storm-icons-s-thunderstorm-icon-115534087873b0oflxtbp.png")
+                    }
+                    
+
+                    $("#weather").html(`<h3 class="col-4 offset-4"> ${city}, ${data.sys.country}</h3>
+                                        <h4 class="col-4 offset-4">Now: ${(Math.floor(data.main.temp-(273.15)))} C°</h4>
+                                        <h5 class="col-4 offset-4">Weather: ${data.weather[0].description}</h5>
+                                        <h5 class="col-4 offset-4">Max: ${(Math.floor(data.main.temp_max-(273.15)))} C°</h5>
+                                        <h5 class="col-4 offset-4">Min: ${(Math.floor(data.main.temp_min-(273.15)))} C°</h5>
+                                        <h5 class="col-4 offset-4">Feels like: ${(Math.floor(data.main.feels_like-(273.15)))} C°</h5>
+                                        <h5 class="col-4 offset-4">Wind:  ${data.wind.speed} kn</h5>`
+                                        );
+                    
+                }, 'json');
+               
+                return false;//para que la pagina no se recargue
+            });
+        });
+    </script>
+   
+</head>
+<body>
+    <div class="container p-5">
+        <h1 class="text-center my-4">Consumiendo una Api de clima</h1>
+        <form class="text-center my-3">
+            <label for="city">Ingresar ciudad:</label>
+            <input type="text" id="city" name="city" placeholder="Ciudad">    
+            <input type="submit" value="Consultar" class="btn-secondary">
+        </form>
+        <div id="weather" class="container mx-auto row" >
+            <!-- climate data -->
+        </div>
+        <div>
+            <img id="imgWeather" src="" class="">
+        </div>
+    </div>
+    
+</body>
+</html>
