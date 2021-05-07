@@ -21,7 +21,10 @@
         }
         .imgWeather{
             width: 115px;
-        }    
+        }  
+        .bckgd{
+            background-color:rgba(54,134,203,0.2);
+        }  
     </style>
 
     <script>
@@ -33,7 +36,7 @@
                 let url="http://api.openweathermap.org/data/2.5/weather?q="+city+",&&appid="+OPEN_WEATHER_APIKEY+"";
 
                 $.get(url, function(data) {
-                   
+                   console.log(data);
                     let icon=data.weather[0].icon;
                   
                     $("#weather").html(`<h2 class="col-3 offset-4 d-grid align-content-center"> ${city}, ${data.sys.country}</h2>
@@ -43,7 +46,8 @@
                                         <h5 class="col-4 offset-4">T. Max: ${(Math.floor(data.main.temp_max-(273.15)))} C°</h5>
                                         <h5 class="col-4 offset-4 bg-gradient">T. Min: ${(Math.floor(data.main.temp_min-(273.15)))} C°</h5>
                                         <h5 class="col-4 offset-4">Feels like: ${(Math.floor(data.main.feels_like-(273.15)))} C°</h5>
-                                        <h5 class="col-4 offset-4 bg-gradient">Wind:  ${data.wind.speed} kn</h5>`
+                                        <h5 class="col-4 offset-4 bg-gradient">Wind:  ${data.wind.speed} kn</h5>
+                                        <h5 class="col-4 offset-4 bckgd">Coord:  ${data.coord.lon} lon, ${data.coord.lat} lat</h5>`
                                         );
 
                     $("#city").val("");
